@@ -4,9 +4,12 @@
 }
 body {
   font-family: "Poppins", sans-serif;
-  height: 100vh;
+  /* height: 100vh; */
   display: grid;
   place-items: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
   position: relative;
 
   background-color: #0b1120;
