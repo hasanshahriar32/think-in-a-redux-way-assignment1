@@ -73,6 +73,21 @@ function createMatch() {
   localStorage.setItem("match", JSON.stringify(match));
 }
 
+//reset all matches
+function reset() {
+  //set initil state VALUE to 0 for all matches
+  initialState.match.forEach((match) => {
+    match.value = 0;
+  });
+  // render();
+  //render match names
+  const match = document.querySelectorAll(".match");
+  match.forEach((match, index) => {
+    match.querySelector(".lws-singleResult").innerHTML =
+      initialState.match[index].value;
+  });
+}
+
 //delete a match from the list
 function deleteMatch(e) {
   const match = document.querySelector(`.deleteBtn${e}`).parentElement
@@ -159,5 +174,4 @@ const render = () => {
 store.subscribe(render);
 
 // initial render
-
 render();
