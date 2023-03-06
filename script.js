@@ -127,6 +127,11 @@ const increment = (id) => {
 const decrement = (id) => {
   const value = parseInt(document.getElementById(`decrement${id}`).value) || 0;
   initialState.match[id - 1].value = initialState.match[id - 1].value - value;
+  //if value is less than 0, set value to 0
+  if (initialState.match[id - 1].value < 0) {
+    initialState.match[id - 1].value = 0;
+  }
+
   return {
     type: DECREMENT,
     payload: value,
