@@ -86,6 +86,16 @@ function reset() {
     match.querySelector(".lws-singleResult").innerHTML =
       initialState.match[index].value;
   });
+
+  //reset the input field value
+  const incrementField = document.getElementsByClassName("lws-increment");
+  const decrementField = document.getElementsByClassName("lws-decrement");
+  for (let i = 0; i < incrementField.length; i++) {
+    incrementField[i].value = 0;
+  }
+  for (let i = 0; i < decrementField.length; i++) {
+    decrementField[i].value = 0;
+  }
 }
 
 //delete a match from the list
