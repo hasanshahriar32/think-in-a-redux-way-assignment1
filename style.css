@@ -142,6 +142,8 @@ h1.name {
 .match {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  flex-shrink: calc(100% / 3);
   padding: 0.5rem 0;
   align-items: center;
   border-bottom: 1px solid #ffffff1a;

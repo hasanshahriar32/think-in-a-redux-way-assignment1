@@ -1,6 +1,12 @@
-let totalMatch = 0;
+let totalMatch = 1;
+let initialValue = 0;
 const initialState = {
-  match: [],
+  match: [
+    {
+      matchName: `Match 1`,
+      value: initialValue,
+    },
+  ],
 };
 
 //create a new match
@@ -19,8 +25,10 @@ function createMatch() {
   // set initial state
   initialState.match.push({
     matchName: `Match ${totalMatch}`,
-    value: 0,
+    value: initialValue,
   });
+
+  console.log(initialState.match);
 
   // get current date and time
   // var today = new Date();
@@ -46,15 +54,15 @@ function createMatch() {
           <div class="inc-dec">
             <form class="incrementForm">
               <h4>Increment</h4>
-              <input type="number" name="increment${totalMatch}" class="lws-increment" id="increment${totalMatch}" />
+              <input type="number" onblur="(store.dispatch(increment(${totalMatch})))" name="increment${totalMatch}" class="lws-increment" id="increment${totalMatch}" />
             </form>
             <form class="decrementForm">
               <h4>Decrement</h4>
-              <input type="number" name="decrement${totalMatch}" class="lws-decrement" id="decrement${totalMatch}" />
+              <input type="number" onblur="(store.dispatch(decrement(${totalMatch})))" name="decrement${totalMatch}" class="lws-decrement" id="decrement${totalMatch}" />
             </form>
           </div>
           <div class="numbers">
-            <h2 class="lws-singleResult" id="screen${totalMatch}">0</h2>
+            <h2 class="lws-singleResult" id="screen${totalMatch}">${initialValue}</h2>
           </div>
         </div>
   
@@ -75,28 +83,81 @@ function deleteMatch(e) {
 
 // select dom elements
 
-const counterEl = document.getElementById("counter");
-const incrementEl = document.getElementById("increment");
-const decrementEl = document.getElementById("decrement");
+const counterEl = document.getElementById("screen1");
+// const incrementEl = document.getElementById("increment");
+// const decrementEl = document.getElementById("decrement");
 
 // action identifiers
 
 const INCREMENT = "increment";
 const DECREMENT = "decrement";
 
+// const increment1 = document.getElementById("increment1");
+// const decrement1 = document.getElementById("decrement1");
+
+//create dynamic id for increment and decrement and make const
+
 // action creators
 
-const increment = () => {
-  const value = parseInt(document.getElementById("increment-value").value) || 0;
+const increment = (id) => {
+  // console.log(id);
+  const value = parseInt(document.getElementById(`increment${id}`).value) || 0;
+  initialState.match[id - 1].value = initialState.match[id - 1].value + value;
+  // console.log(initialState.match[id - 1].value);
   return {
     type: INCREMENT,
     payload: value,
   };
 };
-const decrement = () => {
-  const value = parseInt(document.getElementById("decrement-value").value) || 0;
+const decrement = (id) => {
+  const value = parseInt(document.getElementById(`decrement${id}`).value) || 0;
+  initialState.match[id - 1].value = initialState.match[id - 1].value - value;
   return {
     type: DECREMENT,
     payload: value,
   };
 };
+
+// reducer
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case INCREMENT:
+      return {
+        ...state,
+        value: state.value + action.payload,
+      };
+    case DECREMENT:
+      return {
+        ...state,
+        value: state.value - action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+// store
+
+const store = Redux.createStore(reducer);
+
+// render
+
+const render = () => {
+  const state = store.getState();
+  console.log(store.getState());
+  counterEl.innerHTML = state.match[0].value;
+  const match = document.querySelectorAll(".match");
+  match.forEach((match, index) => {
+    match.querySelector(".lws-singleResult").innerHTML =
+      state.match[index].value;
+  });
+};
+
+// subscribe
+
+store.subscribe(render);
+
+// initial render
+
+render();
